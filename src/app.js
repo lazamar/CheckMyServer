@@ -10,23 +10,37 @@ var Vector2 = require('vector2');
 
 var splashWindow = new UI.Window();
 
-// Text element to inform user
-var text = new UI.Text({
+//Create the background
+var rectangle = new UI.Rect({
   position: new Vector2(0,0),
   size: new Vector2(144,168),
+   backgroundColor:'blue'
+});
+splashWindow.add(rectangle);
+
+// Text element to inform user
+var text = new UI.Text({
+  position: new Vector2(0,30),
+  size: new Vector2(144,80),
   text: 'Check My Server',
   font:'GOTHIC_28_BOLD',
   color:'white',
   textOverflow:'wrap',
   textAlign:'center',
-  backgroundColor:'blue'
+  backgroundColor:'clear'
 });
-
 splashWindow.add(text);
-splashWindow.show();
-splashWindow.on('click', 'select', start);
 
-function start() {
+//   var image = new UI.Image({
+//     position: new Vector2(58, 84),
+//     size: new Vector2(28, 28),
+//     image: 'images/server.png'
+//   });
+//   splashWindow.add(image);
+splashWindow.show();
+// splashWindow.on('click', 'select', start);
+
+setTimeout( function() {
   var menuItems = [];
   menuItems[0] = {
     title: 'http://lazaronihost.ddns.net',
@@ -64,6 +78,7 @@ function start() {
     // if we are having access to the internet.
     var googleIsUp = false;
     var hostIsUp = false;
+    var hostError = false;
     ajax(
       {
         url: "https://www.google.co.uk/",
@@ -98,6 +113,7 @@ function start() {
       },
       function(error){ //Ops, the host probably returned something shady.
         console.log(error);
+        hostError = true;
         var detailCard = new UI.Card({
           title:'Sup host?',
           subtitle:e.item.title,
@@ -113,7 +129,7 @@ function start() {
     setTimeout( function() {
       // If the host answered a nice card is already being displayed so we only have to deal
       // with the case when it didn't answer.
-      if(!hostIsUp){
+      if(!hostIsUp && !hostError){
         if(googleIsUp){ //Well, Google answered but the host didn't. The host is not online.
           detailCard = new UI.Card({
             title:'Host Down',
@@ -135,69 +151,9 @@ function start() {
           detailCard.show();
         }
       }
-    } , 2000);    
+    } , 5000);    
   });
+}, 1000);
   
-}
-  
-  
-  
-//   ajax(
-//     {
-//       url:'http://api.openweathermap.org/data/2.5/forecast?q=London',
-//       type:'json'
-//     },
-//     function(data) {
-//       var menuItems = parseFeed(data, 10);
-  
-//       // Check the items are extracted OK
-//       for(var i = 0; i < menuItems.length; i++) {
-//         console.log(menuItems[i].title + ' | ' + menuItems[i].subtitle);
-//       }
-//       // Construct Menu to show to user
-//       var resultsMenu = new UI.Menu({
-//         sections: [{
-//           title: 'Current Forecast',
-//           items: menuItems
-//         }]
-//       });
-      
-//       // Add an action for SELECT
-//       resultsMenu.on('select', function(e) {
-//         console.log('Item number ' + e.itemIndex + ' was pressed!');
-//         // Get that forecast
-//         var forecast = data.list[e.itemIndex];
-      
-//         // Assemble body string
-//         var content = data.list[e.itemIndex].weather[0].description;
-      
-//         // Capitalize first letter
-//         content = content.charAt(0).toUpperCase() + content.substring(1);
-      
-//         // Add temperature, pressure etc
-//         content += '\nTemperature: ' + Math.round(forecast.main.temp - 273.15) + '°C' 
-//         + '\nPressure: ' + Math.round(forecast.main.pressure) + ' mbar' +
-//           '\nWind: ' + Math.round(forecast.wind.speed) + ' mph, ' + 
-//           Math.round(forecast.wind.deg) + '°';
-        
-//         // Create the Card for detailed view
-//         var detailCard = new UI.Card({
-//           title:'Details',
-//           subtitle:e.item.subtitle,
-//           body: content
-//         });
-//         detailCard.show();
-//       });
-      
-//       // Show the Menu, hide the splash
-//       resultsMenu.show();
-//       splashWindow.hide();
-      
-//     },
-//     function(error) {
-//       console.log('Download failed: ' + error);
-//     }
-//   )
-// };
 
 
