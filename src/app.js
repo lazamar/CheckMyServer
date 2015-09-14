@@ -14,7 +14,7 @@ var splashWindow = new UI.Window();
 var rectangle = new UI.Rect({
   position: new Vector2(0,0),
   size: new Vector2(144,168),
-   backgroundColor:'blue'
+   backgroundColor:'blueMoon'
 });
 splashWindow.add(rectangle);
 
@@ -61,7 +61,8 @@ setTimeout( function() {
     sections: [{
       title: 'Hosts',
       items: menuItems
-    }]
+    }],
+    highlightBackgroundColor: "blueMoon"
   });
   hostsMenu.show();
   // Whenever the user selects an option
