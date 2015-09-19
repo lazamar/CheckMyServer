@@ -79,7 +79,7 @@ setTimeout( function() {
     // if we are having access to the internet.
     var googleIsUp = false;
     var hostIsUp = false;
-    var hostError = false;
+    
     ajax(
       {
         url: "https://www.google.co.uk/",
@@ -114,15 +114,6 @@ setTimeout( function() {
       },
       function(error){ //Ops, the host probably returned something shady.
         console.log(error);
-        hostError = true;
-        var detailCard = new UI.Card({
-          title:'Sup host?',
-          subtitle:e.item.title,
-          body: 'Your host may be up but there was an error in the request: '+ error,
-          scrollable: true
-        });
-        splashCard.hide();
-        detailCard.show();
       }
     );
     
@@ -130,7 +121,7 @@ setTimeout( function() {
     setTimeout( function() {
       // If the host answered a nice card is already being displayed so we only have to deal
       // with the case when it didn't answer.
-      if(!hostIsUp && !hostError){
+      if(!hostIsUp){
         if(googleIsUp){ //Well, Google answered but the host didn't. The host is not online.
           detailCard = new UI.Card({
             title:'Host Down',
